@@ -7,13 +7,14 @@ docker run --rm \
     -v $(pwd):/app \
     -w /app \
     sstc/headful-chromium
-    xvfb-run main.js
+    xvfb-run -a bash -c "node main.mjs"
 ```
 
-> main.js
+> main.mjs
 
 ```js
-const { chromium } = require("playwright-chromium")
+import playwright from 'playwright'
+const { chromium } = playwright
 
 const extId = 'xxxxxxxxxx'
 const pathToExtension = `/app/chromium-extension/${extId}`
@@ -21,24 +22,22 @@ const entrypoint = `chrome-extension://${extId}/index.html`
 const userDataDir = '/tmp/chromium'
 
 async function main() {
-    const browserContext = await chromium.launchPersistentContext(userDataDir, {
-        executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH,
-        headless: false,
-        args: [
-            `--disable-extensions-except=${pathToExtension}`,
-            `--load-extension=${pathToExtension}`
-        ],
-    })
-    const page = await browserContext.newPage()
-    await page.goto(entrypoint)
-    // ...
+  const browserContext = await chromium.launchPersistentContext(userDataDir, {
+    executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH,
+    headless: false,
+    args: [
+      `--disable-extensions-except=${pathToExtension}`,
+      `--load-extension=${pathToExtension}`
+    ],
+  })
+  const page = await browserContext.newPage()
+  await page.goto(entrypoint)
+  // ...
+  await browserContext.close()
 }
-
-;(async () => {
-  try {
-    await main()
-  } finally {
-    process.exit()
-  }
-})()
+try {
+  await main()
+} finally {
+  process.exit()
+}
 ```
