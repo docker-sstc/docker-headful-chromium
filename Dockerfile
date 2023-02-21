@@ -1,5 +1,5 @@
 # https://github.com/microsoft/playwright/blob/main/utils/docker/Dockerfile.focal
-FROM mcr.microsoft.com/playwright:v1.18.1-focal
+FROM mcr.microsoft.com/playwright:v1.30.0-focal
 
 # RUN set -ex; \
 # 	apt-get update; \
