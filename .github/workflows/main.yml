@@ -18,36 +18,31 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
-    - name: :ubuntu
-      uses: docker/build-push-action@v6
+    - uses: docker/build-push-action@v6
       with:
         push: true
         platforms: linux/amd64,linux/arm64
         file: ./Dockerfile
         tags: ${{ steps.meta.outputs.tags }}
-    - name: ubuntu-20
-      uses: docker/build-push-action@v6
+    - uses: docker/build-push-action@v6
       with:
         push: true
         platforms: linux/amd64,linux/arm64
         file: ./ubuntu-20/Dockerfile
         tags: sstc/headful-chromium:ubuntu-20
-    - name: ubuntu-22
-      uses: docker/build-push-action@v6
+    - uses: docker/build-push-action@v6
       with:
         push: true
         platforms: linux/amd64,linux/arm64
         file: ./ubuntu-22/Dockerfile
         tags: sstc/headful-chromium:ubuntu-22
-    - name: :debian-11
-      uses: docker/build-push-action@v6
+    - uses: docker/build-push-action@v6
       with:
         push: true
         platforms: linux/amd64,linux/arm64
         file: ./debian-11/Dockerfile
         tags: sstc/headful-chromium:debian-11
-    - name: :debian-12
-      uses: docker/build-push-action@v6
+    - uses: docker/build-push-action@v6
       with:
         push: true
         platforms: linux/amd64,linux/arm64
