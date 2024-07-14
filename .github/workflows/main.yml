@@ -22,8 +22,14 @@ jobs:
       with:
         push: true
         platforms: linux/amd64,linux/arm64
-        file: ./Dockerfile
-        tags: ${{ steps.meta.outputs.tags }}
+        file: ./debian-11/Dockerfile
+        tags: sstc/headful-chromium:debian-11
+    - uses: docker/build-push-action@v6
+      with:
+        push: true
+        platforms: linux/amd64,linux/arm64
+        file: ./debian-12/Dockerfile
+        tags: sstc/headful-chromium:debian-12
     - uses: docker/build-push-action@v6
       with:
         push: true
@@ -40,14 +46,8 @@ jobs:
       with:
         push: true
         platforms: linux/amd64,linux/arm64
-        file: ./debian-11/Dockerfile
-        tags: sstc/headful-chromium:debian-11
-    - uses: docker/build-push-action@v6
-      with:
-        push: true
-        platforms: linux/amd64,linux/arm64
-        file: ./debian-12/Dockerfile
-        tags: sstc/headful-chromium:debian-12
+        file: ./ubuntu-24/Dockerfile
+        tags: ${{ steps.meta.outputs.tags }}
     - uses: actions/checkout@v4
     - uses: christian-korneck/update-container-description-action@v1
       env:

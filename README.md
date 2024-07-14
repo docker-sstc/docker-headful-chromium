@@ -1,5 +1,8 @@
 # docker-headful-chromium
 
+[![Build workflow](https://github.com/docker-sstc/docker-headful-chromium/actions/workflows/main.yml/badge.svg)](https://github.com/docker-sstc/docker-headful-chromium/actions)
+[![Docker pulls](https://img.shields.io/docker/pulls/sstc/headful-chromium.svg)](https://hub.docker.com/r/sstc/headful-chromium)
+
 ## Usage
 
 ```bash

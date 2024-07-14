@@ -1,7 +1,7 @@
 # https://github.com/microsoft/playwright/blob/main/utils/docker/Dockerfile.jammy
-# version: https://github.com/microsoft/playwright/releases
+# playwright version: https://github.com/microsoft/playwright/releases
 # ubuntu version: https://releases.ubuntu.com/
-FROM mcr.microsoft.com/playwright:v1.45.0-jammy
+FROM mcr.microsoft.com/playwright:v1.45.1-jammy
 
 # RUN set -ex; \
 # 	apt-get update; \
