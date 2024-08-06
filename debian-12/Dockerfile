@@ -1,3 +1,4 @@
+ARG PLAYWRIGHT_VERSION
 FROM debian:12-slim
 
 RUN set -ex; \
@@ -28,4 +29,4 @@ RUN set -e; \
 
 RUN set -e; \
 	npm -g install \
-		playwright
+		playwright@${PLAYWRIGHT_VERSION}

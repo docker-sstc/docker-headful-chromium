@@ -1,4 +1,6 @@
 on: [push]
+env:
+  PLAYWRIGHT_VERSION: 1.46.0
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -24,30 +26,40 @@ jobs:
         platforms: linux/amd64,linux/arm64
         file: ./debian-11/Dockerfile
         tags: sstc/headful-chromium:debian-11
+        build-args: |
+          PLAYWRIGHT_VERSION=${{env.PLAYWRIGHT_VERSION}}
     - uses: docker/build-push-action@v6
       with:
         push: true
         platforms: linux/amd64,linux/arm64
         file: ./debian-12/Dockerfile
         tags: sstc/headful-chromium:debian-12
+        build-args: |
+          PLAYWRIGHT_VERSION=${{env.PLAYWRIGHT_VERSION}}
     - uses: docker/build-push-action@v6
       with:
         push: true
         platforms: linux/amd64,linux/arm64
         file: ./ubuntu-20/Dockerfile
         tags: sstc/headful-chromium:ubuntu-20
+        build-args: |
+          PLAYWRIGHT_VERSION=${{env.PLAYWRIGHT_VERSION}}
     - uses: docker/build-push-action@v6
       with:
         push: true
         platforms: linux/amd64,linux/arm64
         file: ./ubuntu-22/Dockerfile
         tags: sstc/headful-chromium:ubuntu-22
+        build-args: |
+          PLAYWRIGHT_VERSION=${{env.PLAYWRIGHT_VERSION}}
     - uses: docker/build-push-action@v6
       with:
         push: true
         platforms: linux/amd64,linux/arm64
         file: ./ubuntu-24/Dockerfile
         tags: ${{ steps.meta.outputs.tags }}
+        build-args: |
+          PLAYWRIGHT_VERSION=${{env.PLAYWRIGHT_VERSION}}
     - uses: actions/checkout@v4
     - uses: christian-korneck/update-container-description-action@v1
       env:

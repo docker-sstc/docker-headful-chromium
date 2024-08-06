@@ -1,7 +1,8 @@
 # https://github.com/microsoft/playwright/blob/main/utils/docker/Dockerfile.focal
 # playwright version: https://github.com/microsoft/playwright/releases
 # ubuntu version: https://releases.ubuntu.com/
-FROM mcr.microsoft.com/playwright:v1.45.1-focal
+ARG PLAYWRIGHT_VERSION
+FROM mcr.microsoft.com/playwright:v${PLAYWRIGHT_VERSION}-focal
 
 # RUN set -ex; \
 # 	apt-get update; \
