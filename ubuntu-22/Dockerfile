@@ -21,4 +21,4 @@ RUN set -e; \
 
 RUN set -e; \
 	npm -g install \
-		playwright
+		playwright@${PLAYWRIGHT_VERSION}

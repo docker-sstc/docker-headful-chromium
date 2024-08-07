@@ -5,7 +5,74 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - id: meta
+    - uses: docker/setup-qemu-action@v3
+    - uses: docker/setup-buildx-action@v3
+    - uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    - id: meta_debian11
+      uses: docker/metadata-action@v5
+      with:
+        images: |
+          sstc/headful-chromium
+        tags: |
+          type=raw,value=debian-11
+    - uses: docker/build-push-action@v6
+      with:
+        push: true
+        platforms: linux/amd64,linux/arm64
+        file: ./debian-11/Dockerfile
+        tags: ${{ steps.meta_debian11.outputs.tags }}
+        build-args: |
+          PLAYWRIGHT_VERSION=${{env.PLAYWRIGHT_VERSION}}
+    - id: meta_debian12
+      uses: docker/metadata-action@v5
+      with:
+        images: |
+          sstc/headful-chromium
+        tags: |
+          type=raw,value=debian
+          type=raw,value=debian-12
+    - uses: docker/build-push-action@v6
+      with:
+        push: true
+        platforms: linux/amd64,linux/arm64
+        file: ./debian-12/Dockerfile
+        tags: ${{ steps.meta_debian12.outputs.tags }}
+        build-args: |
+          PLAYWRIGHT_VERSION=${{env.PLAYWRIGHT_VERSION}}
+    - id: meta_ubuntu20
+      uses: docker/metadata-action@v5
+      with:
+        images: |
+          sstc/headful-chromium
+        tags: |
+          type=raw,value=ubuntu-20
+    - uses: docker/build-push-action@v6
+      with:
+        push: true
+        platforms: linux/amd64,linux/arm64
+        file: ./ubuntu-20/Dockerfile
+        tags: ${{ steps.meta_ubuntu20.outputs.tags }}
+        build-args: |
+          PLAYWRIGHT_VERSION=${{env.PLAYWRIGHT_VERSION}}
+    - id: meta_ubuntu22
+      uses: docker/metadata-action@v5
+      with:
+        images: |
+          sstc/headful-chromium
+        tags: |
+          type=raw,value=ubuntu-22
+    - uses: docker/build-push-action@v6
+      with:
+        push: true
+        platforms: linux/amd64,linux/arm64
+        file: ./ubuntu-22/Dockerfile
+        tags: ${{ steps.meta_ubuntu22.outputs.tags }}
+        build-args: |
+          PLAYWRIGHT_VERSION=${{env.PLAYWRIGHT_VERSION}}
+    - id: meta_ubuntu24
       uses: docker/metadata-action@v5
       with:
         images: |
@@ -14,50 +81,12 @@ jobs:
           type=raw,value=latest
           type=raw,value=ubuntu
           type=raw,value=ubuntu-24
-    - uses: docker/setup-qemu-action@v3
-    - uses: docker/setup-buildx-action@v3
-    - uses: docker/login-action@v3
-      with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
-    - uses: docker/build-push-action@v6
-      with:
-        push: true
-        platforms: linux/amd64,linux/arm64
-        file: ./debian-11/Dockerfile
-        tags: sstc/headful-chromium:debian-11
-        build-args: |
-          PLAYWRIGHT_VERSION=${{env.PLAYWRIGHT_VERSION}}
-    - uses: docker/build-push-action@v6
-      with:
-        push: true
-        platforms: linux/amd64,linux/arm64
-        file: ./debian-12/Dockerfile
-        tags: sstc/headful-chromium:debian-12
-        build-args: |
-          PLAYWRIGHT_VERSION=${{env.PLAYWRIGHT_VERSION}}
-    - uses: docker/build-push-action@v6
-      with:
-        push: true
-        platforms: linux/amd64,linux/arm64
-        file: ./ubuntu-20/Dockerfile
-        tags: sstc/headful-chromium:ubuntu-20
-        build-args: |
-          PLAYWRIGHT_VERSION=${{env.PLAYWRIGHT_VERSION}}
-    - uses: docker/build-push-action@v6
-      with:
-        push: true
-        platforms: linux/amd64,linux/arm64
-        file: ./ubuntu-22/Dockerfile
-        tags: sstc/headful-chromium:ubuntu-22
-        build-args: |
-          PLAYWRIGHT_VERSION=${{env.PLAYWRIGHT_VERSION}}
     - uses: docker/build-push-action@v6
       with:
         push: true
         platforms: linux/amd64,linux/arm64
         file: ./ubuntu-24/Dockerfile
-        tags: ${{ steps.meta.outputs.tags }}
+        tags: ${{ steps.meta_ubuntu24.outputs.tags }}
         build-args: |
           PLAYWRIGHT_VERSION=${{env.PLAYWRIGHT_VERSION}}
     - uses: actions/checkout@v4
