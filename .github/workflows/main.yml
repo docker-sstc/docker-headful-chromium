@@ -1,6 +1,6 @@
 on: [push]
 env:
-  PLAYWRIGHT_VERSION: 1.47.0
+  PLAYWRIGHT_VERSION: 1.47.1
 jobs:
   build:
     runs-on: ubuntu-latest
