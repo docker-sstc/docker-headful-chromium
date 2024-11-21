@@ -44,3 +44,10 @@ try {
   process.exit()
 }
 ```
+
+## Refs
+
+- ubuntu version: https://releases.ubuntu.com/
+- playwright versions: https://github.com/microsoft/playwright/releases
+- playwright docker build files: https://github.com/microsoft/playwright/tree/main/utils/docker
+- playwright docker image tags: https://mcr.microsoft.com/en-us/artifact/mar/playwright/tags
