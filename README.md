@@ -7,47 +7,92 @@
 
 ```bash
 docker run --rm \
-    -v $(pwd):/app \
-    -w /app \
-    sstc/headful-chromium
-    xvfb-run -a bash -c "node main.mjs"
+  -v $(pwd):/app \
+  -w /app \
+  sstc/headful-chromium \
+  npm link playwright
+
+docker run --rm \
+  --init \
+  --ipc=host \
+  --privileged \
+  -v $(pwd):/app \
+  -w /app \
+  sstc/headful-chromium \
+  ./example-entrypoint.sh node example-launch.mjs
 ```
 
-> main.mjs
+## Advanced Usage
 
-```js
-import playwright from 'playwright'
-const { chromium } = playwright
+```bash
+docker run --rm \
+  -v $(pwd):/app \
+  -w /app \
+  sstc/headful-chromium \
+  npm link playwright
 
-const extId = 'xxxxxxxxxx'
-const pathToExtension = `/app/chromium-extension/${extId}`
-const entrypoint = `chrome-extension://${extId}/index.html`
-const userDataDir = '/tmp/chromium'
+docker run --rm \
+  --init \
+  --ipc=host \
+  --name server \
+  -p 3000:3000 \
+  -v $(pwd):/app \
+  -w /app \
+  sstc/headful-chromium \
+  ./example-entrypoint.sh node example-server.mjs
+```
 
-async function main() {
-  const browserContext = await chromium.launchPersistentContext(userDataDir, {
-    executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH,
-    headless: false,
-    args: [
-      `--disable-extensions-except=${pathToExtension}`,
-      `--load-extension=${pathToExtension}`
-    ],
-  })
-  const page = await browserContext.newPage()
-  await page.goto(entrypoint)
-  // ...
-  await browserContext.close()
-}
-try {
-  await main()
-} finally {
-  process.exit()
-}
+```bash
+docker run --rm \
+  --net host \
+  -v $(pwd):/app \
+  -w /app \
+  sstc/headful-chromium \
+  node example-connect.mjs
 ```
 
 ## Refs
 
-- ubuntu version: https://releases.ubuntu.com/
-- playwright versions: https://github.com/microsoft/playwright/releases
-- playwright docker build files: https://github.com/microsoft/playwright/tree/main/utils/docker
-- playwright docker image tags: https://mcr.microsoft.com/en-us/artifact/mar/playwright/tags
+- Debian versions: https://www.debian.org/releases/
+- Ubuntu versions: https://ubuntu.com/about/release-cycle
+- Playwright versions: https://github.com/microsoft/playwright/releases
+- Playwright docker build files: https://github.com/microsoft/playwright/tree/main/utils/docker
+- Playwright docker image tags: https://mcr.microsoft.com/en-us/artifact/mar/playwright/tags
+- Playwright connect to remote: https://playwright.dev/docs/docker#remote-connection
+- headful commands: https://github.com/MauFournier/puppeteer-headful-with-commands
+- Dbus: https://github.com/microsoft/WSL/issues/7915#issuecomment-1163333151
+
+  ```bash
+  apt update
+  apt install -y notification-daemon
+  apt install -y upower
+  export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket
+  export RUNLEVEL=1
+  dbus-daemon --session --address=$DBUS_SESSION_BUS_ADDRESS --nofork --nopidfile --syslog-only &
+  # service dbus start
+
+  cat << EOF >> /usr/share/dbus-1/services/org.freedesktop.Notifications.service
+  [D-BUS Service]
+  Name=org.freedesktop.Notifications
+  Exec=/usr/lib/notification-daemon/notification-daemon
+  EOF
+
+  cat << EOF >> /usr/sbin/policy-rc.d
+  #!/bin/sh
+  exit 0
+  EOF
+  ```
+
+- Local test: 
+
+  ```bash
+  docker build -f debian-12/Dockerfile -t test --build-arg PLAYWRIGHT_VERSION=1.52.0 --progress=plain --no-cache .
+  docker run -it --ipc=host -v $(pwd):/app -w /app test /bin/bash
+  docker run -v $(pwd):/app -w /app test ./example-entrypoint.sh node example-launch.mjs
+  ```
+
+  ```bash
+  node --version
+  npm --version
+  chromium --version
+  ```

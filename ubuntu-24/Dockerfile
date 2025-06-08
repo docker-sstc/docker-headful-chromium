@@ -1,14 +1,6 @@
 ARG PLAYWRIGHT_VERSION
 FROM mcr.microsoft.com/playwright:v${PLAYWRIGHT_VERSION}-noble
 
-# RUN set -ex; \
-# 	apt-get update; \
-# 	DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
-# 		npm \
-# 		; \
-# 	apt-get clean; \
-# 	rm -rf /var/lib/apt/lists/*
-
 # Essentials for scripts
 ENV NODE_PATH=/usr/lib/node_modules
 RUN set -e; \
