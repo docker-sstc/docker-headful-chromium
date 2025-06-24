@@ -86,7 +86,7 @@ docker run --rm \
 - Local test: 
 
   ```bash
-  docker build -f debian-12/Dockerfile -t test --build-arg PLAYWRIGHT_VERSION=1.52.0 --progress=plain --no-cache .
+  docker build -f debian-12/Dockerfile -t test --build-arg PLAYWRIGHT_VERSION=1.53.1 --progress=plain --no-cache .
   docker run -it --ipc=host -v $(pwd):/app -w /app test /bin/bash
   docker run -v $(pwd):/app -w /app test ./example-entrypoint.sh node example-launch.mjs
   ```

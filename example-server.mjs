@@ -8,6 +8,7 @@ async function main() {
     host: '0.0.0.0',
     port: 3000,
     wsPath: '/',
+    // _userDataDir: '/tmp'
   })
   const wsEndpoint = browserServer.wsEndpoint()
   console.log(wsEndpoint)
