@@ -83,7 +83,7 @@ docker run --rm \
   EOF
   ```
 
-- Local test: 
+- Local test:
 
   ```bash
   docker build -f debian-12/Dockerfile -t test --build-arg PLAYWRIGHT_VERSION=1.53.1 --progress=plain --no-cache .
